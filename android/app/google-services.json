@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "522552221470",
+    "project_id": "flutter-lovers-48975",
+    "storage_bucket": "flutter-lovers-48975.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522552221470:android:fa8d6fd8503441f5c9330f",
+        "android_client_info": {
+          "package_name": "com.karacazade.yunusemre.flutter_lovers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522552221470-03gcm2k1tp9o8lodkg3e4g8o42qhbpaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOpDB_QpJbSrUO1IqPz3VIVIsBYMTQjdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522552221470-03gcm2k1tp9o8lodkg3e4g8o42qhbpaf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "522552221470-0d5ottslnb6ld48ntnmjnkmlgg99nfua.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.karacazade.yunusemre.flutterLovers"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
