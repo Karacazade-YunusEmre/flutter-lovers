@@ -44,9 +44,9 @@ Future<void> initApp() async {
 void setupLocator() {
   final getIt = GetIt.instance;
 
-  getIt.registerSingleton<IAuthBaseService>(FirebaseAuthService());
-  getIt.registerSingleton<ICloudBaseService>(FirebaseCloudService());
-  getIt.registerSingleton<IUserBaseRepository>(IsarUserRepository());
+  getIt.registerLazySingleton<IAuthBaseService>(() => FirebaseAuthService());
+  getIt.registerLazySingleton<ICloudBaseService>(() => FirebaseCloudService());
+  getIt.registerLazySingleton<IUserBaseRepository>(() => IsarUserRepository());
 
   userService = getIt<IAuthBaseService>();
   cloudService = getIt<ICloudBaseService>();

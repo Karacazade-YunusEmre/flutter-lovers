@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             height: 0.85.sh,
             color: Colors.green,
             child: Center(
-              child: Text('Giriş yapan kullanıcı: ${currentUser!.email}'),
+              child: Text('Giriş yapan kullanıcı: ${currentUser?.email}'),
             ),
           ),
         ],

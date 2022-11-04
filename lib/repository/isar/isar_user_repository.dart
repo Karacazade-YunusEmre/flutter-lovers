@@ -13,7 +13,8 @@ class IsarUserRepository implements IUserBaseRepository {
   }
 
   Future<void> setupIsar() async {
-    _isar = await Isar.open([UserModelSchema]);
+    // _isar = await Isar.open([UserModelSchema]);
+    _isar = Isar.openSync([UserModelSchema]);
   }
 
   @override
@@ -30,9 +31,8 @@ class IsarUserRepository implements IUserBaseRepository {
   }
 
   @override
-  Future<List<UserModel>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<List<UserModel>> getAll() async {
+    return await _isar.userModels.where().findAll();
   }
 
   @override

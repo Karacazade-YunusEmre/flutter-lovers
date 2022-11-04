@@ -17,6 +17,7 @@ class UserController extends GetxController with DateOperationsMixin {
   Future<void> onInit() async {
     super.onInit();
 
+    await loadUserList();
     await _isUserSignIn();
   }
 
@@ -40,10 +41,8 @@ class UserController extends GetxController with DateOperationsMixin {
       userModel.password = null;
 
       DateTime? presentDate = await getPresentDate();
-      if (presentDate != null) {
-        (userModel).createdDate = presentDate;
-        (userModel).lastLogInTime = presentDate;
-      }
+      userModel.createdDate = presentDate;
+      userModel.lastLogInTime = presentDate;
 
       userModel = await cloudService.addNewUser(userModel) as UserModel?;
       userList.add(userModel!);
@@ -56,19 +55,65 @@ class UserController extends GetxController with DateOperationsMixin {
     }
   }
 
+  Future<bool> userLogInWithEmailAndPassword({required String email, required String password}) async {
+    try {
+      UserModel? savedUser = await userRepository.getUserByEmail(email);
+      if (savedUser != null) {
+        savedUser.password = password;
+        final result = await userService.userSignInWithEmailAndPassword(savedUser);
+
+        if (result) {
+          UserModel? userModelFromUserList = userList.firstWhereOrNull((item) => item.email == savedUser.email);
+          int userIndex = userList.indexOf(userModelFromUserList);
+
+          DateTime? presentDate = await getPresentDate();
+          savedUser.lastLogInTime = presentDate;
+          savedUser.password = null;
+
+          userRepository.update(savedUser);
+          cloudService.update(savedUser);
+          userList[userIndex] = savedUser;
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (_) {
+      debugPrint('Kullanıcı oturum açma işlemi sırasında hata oluştu!');
+      return false;
+    }
+  }
+
   Future<bool> userLogInWithGoogle() async {
     try {
-      IBaseModel? userModel = await userService.userSignInWithGoogle();
+      Map<String, dynamic> googleUser = await userService.userSignInWithGoogle();
 
-      if (userModel != null) {
+      if (googleUser['email'] != null) {
+        UserModel? savedUser = await userRepository.getUserByEmail(googleUser['email']);
         DateTime? presentDate = await getPresentDate();
-        if (presentDate != null) {
-          (userModel as UserModel).createdDate = presentDate;
-          (userModel).lastLogInTime = presentDate;
+
+        if (savedUser != null) {
+          UserModel? userModelFromUserList = userList.firstWhereOrNull((item) => item.email == savedUser.email);
+          int userIndex = userList.indexOf(userModelFromUserList);
+
+          savedUser.lastLogInTime = presentDate;
+          userRepository.update(savedUser);
+          await cloudService.update(savedUser);
+          userList[userIndex] = savedUser;
+        } else {
+          UserModel newUser = UserModel(
+            email: googleUser['email'],
+            cloudId: googleUser['cloudId'],
+            createdDate: presentDate,
+            lastLogInTime: presentDate,
+          );
+          int? localId = await userRepository.add(newUser);
+          newUser.localId = localId;
+          userList.add(newUser);
+          await cloudService.addNewUser(newUser);
         }
-        userModel = await cloudService.addNewUser(userModel) as UserModel?;
-        userList.add(userModel as UserModel);
-        userRepository.add(userModel);
 
         return true;
       } else {
@@ -82,17 +127,29 @@ class UserController extends GetxController with DateOperationsMixin {
 
   Future<bool> userLogInWithFacebook() async {
     try {
-      IBaseModel? userModel = await userService.userSignInWithFacebook();
-      if (userModel != null) {
-        DateTime? presentDate = await getPresentDate();
-        if (presentDate != null) {
-          (userModel as UserModel).createdDate = presentDate;
-          (userModel).lastLogInTime = presentDate;
-        }
+      Map<String, dynamic> facebookUser = await userService.userSignInWithFacebook();
 
-        userModel = await cloudService.addNewUser(userModel) as UserModel?;
-        userList.add(userModel as UserModel);
-        userRepository.add(userModel);
+      if (facebookUser['email'] != null) {
+        UserModel? savedUser = await userRepository.getUserByEmail(facebookUser['email']);
+        DateTime? presentDate = await getPresentDate();
+
+        if (savedUser != null) {
+          int userIndex = userList.indexOf(savedUser);
+          savedUser.lastLogInTime = presentDate;
+          userRepository.update(savedUser);
+          await cloudService.update(savedUser);
+          userList[userIndex] = savedUser;
+        } else {
+          UserModel newUser = UserModel(
+            email: facebookUser['email'],
+            cloudId: facebookUser['cloudId'],
+            createdDate: presentDate,
+            lastLogInTime: presentDate,
+          );
+          userRepository.add(newUser);
+          userList.add(newUser);
+          await cloudService.addNewUser(newUser);
+        }
 
         return true;
       } else {
@@ -127,34 +184,6 @@ class UserController extends GetxController with DateOperationsMixin {
     }
   }
 
-  Future<bool> userLogInWithEmailAndPassword({required String email, required String password}) async {
-    try {
-      UserModel? userModel = await userRepository.getUserByEmail(email);
-      if (userModel != null) {
-        userModel.password = password;
-        final result = await userService.userSignInWithEmailAndPassword(userModel);
-        if (result) {
-          DateTime? presentDate = await getPresentDate();
-
-          if (presentDate != null) {
-            userModel.lastLogInTime = presentDate;
-          }
-
-          userRepository.update(userModel);
-          cloudService.update(userModel);
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } catch (_) {
-      debugPrint('Kullanıcı oturum açma işlemi sırasında hata oluştu!');
-      return false;
-    }
-  }
-
   Future<bool> userLogOut() async {
     try {
       await userService.userSignOut();
@@ -166,6 +195,15 @@ class UserController extends GetxController with DateOperationsMixin {
   }
 
   ///#endregion event methods
+
+  ///#region general purpose methods
+
+  Future<void> loadUserList() async {
+    List<UserModel>? users = await userRepository.getAll();
+    userList.addAll(users);
+  }
+
+  ///#endregion general purpose methods
 
   ///#region validation methods
 

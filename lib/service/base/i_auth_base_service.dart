@@ -8,9 +8,9 @@ abstract class IAuthBaseService<T extends IBaseModel> {
 
   Future<bool> userSignInWithEmailAndPassword(T model);
 
-  Future<T?> userSignInWithGoogle();
+  Future<Map<String, dynamic>> userSignInWithGoogle();
 
-  Future<T?> userSignInWithFacebook();
+  Future<Map<String, dynamic>> userSignInWithFacebook();
 
   Future<void> userSignOut();
 

@@ -65,7 +65,7 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
   }
 
   @override
-  Future<UserModel?> userSignInWithFacebook() async {
+  Future<Map<String, dynamic>> userSignInWithFacebook() async {
     try {
       // Trigger the sign-in flow
       final LoginResult loginResult = await FacebookAuth.instance.login();
@@ -75,15 +75,17 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
 
       // Once signed in, return the UserCredential
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-      UserModel userModel = UserModel(cloudId: userCredential.user!.uid, email: userCredential.user!.email!);
-      return userModel;
+      return {
+        'email': userCredential.user?.email,
+        'cloudId': userCredential.user?.uid,
+      };
     } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
-  Future<UserModel?> userSignInWithGoogle() async {
+  Future<Map<String, dynamic>> userSignInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -100,8 +102,10 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
       // Once signed in, return the UserCredential
       UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
 
-      UserModel userModel = UserModel(cloudId: userCredential.user!.uid, email: userCredential.user!.email!);
-      return userModel;
+      return {
+        'email': userCredential.user?.email,
+        'cloudId': userCredential.user?.uid,
+      };
     } catch (e) {
       throw Exception(e);
     }
