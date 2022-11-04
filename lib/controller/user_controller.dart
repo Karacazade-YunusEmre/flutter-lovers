@@ -181,6 +181,7 @@ class UserController extends GetxController with DateOperationsMixin {
       debugPrint('User signed in already');
     } else {
       initialRoute = '/login_page';
+      Get.offAndToNamed(initialRoute);
     }
   }
 

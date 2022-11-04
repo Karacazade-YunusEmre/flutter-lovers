@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lovers/controller/user_controller.dart';
+import 'package:flutter_lovers/controller/bindings/user_binding.dart';
 import 'package:flutter_lovers/firebase_options.dart';
 import 'package:flutter_lovers/repository/base/i_user_base_repository.dart';
 import 'package:flutter_lovers/repository/isar/isar_user_repository.dart';
@@ -17,13 +17,11 @@ import 'package:get_it/get_it.dart';
 
 late IAuthBaseService userService;
 late ICloudBaseService cloudService;
-late UserController userController;
 late IUserBaseRepository userRepository;
 
 Future<void> main() async {
   await initApp();
   setupLocator();
-  setupController();
   runApp(const MainApp());
 }
 
@@ -53,10 +51,6 @@ void setupLocator() {
   userRepository = getIt<IUserBaseRepository>();
 }
 
-void setupController() {
-  userController = Get.put(UserController());
-}
-
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -71,8 +65,8 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Conversation App',
           theme: AppThemeData.getMainLightThemeData,
+          initialBinding: UserBinding(),
           getPages: Routes.getRoutes,
-          initialRoute: userController.initialRoute,
         );
       },
     );
