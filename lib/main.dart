@@ -1,10 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lovers/controller/bindings/user_binding.dart';
+import 'package:flutter_lovers/controller/user_authentication_controller.dart';
 import 'package:flutter_lovers/firebase_options.dart';
-import 'package:flutter_lovers/repository/base/i_user_base_repository.dart';
-import 'package:flutter_lovers/repository/isar/isar_user_repository.dart';
 import 'package:flutter_lovers/service/base/i_auth_base_service.dart';
 import 'package:flutter_lovers/service/base/i_cloud_base_service.dart';
 import 'package:flutter_lovers/service/firebase/firebase_auth_service.dart';
@@ -17,11 +15,12 @@ import 'package:get_it/get_it.dart';
 
 late IAuthBaseService userService;
 late ICloudBaseService cloudService;
-late IUserBaseRepository userRepository;
+late UserAuthenticationController _userController;
 
 Future<void> main() async {
   await initApp();
   setupLocator();
+  setupController();
   runApp(const MainApp());
 }
 
@@ -44,11 +43,13 @@ void setupLocator() {
 
   getIt.registerLazySingleton<IAuthBaseService>(() => FirebaseAuthService());
   getIt.registerLazySingleton<ICloudBaseService>(() => FirebaseCloudService());
-  getIt.registerLazySingleton<IUserBaseRepository>(() => IsarUserRepository());
 
   userService = getIt<IAuthBaseService>();
   cloudService = getIt<ICloudBaseService>();
-  userRepository = getIt<IUserBaseRepository>();
+}
+
+void setupController() {
+  _userController = Get.put(UserAuthenticationController());
 }
 
 class MainApp extends StatelessWidget {
@@ -65,7 +66,7 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Conversation App',
           theme: AppThemeData.getMainLightThemeData,
-          initialBinding: UserBinding(),
+          initialRoute: _userController.initialRoute,
           getPages: Routes.getRoutes,
         );
       },

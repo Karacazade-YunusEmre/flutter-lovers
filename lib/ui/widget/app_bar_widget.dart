@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lovers/controller/user_controller.dart';
+import 'package:flutter_lovers/controller/user_authentication_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 /// created by YunusEmre
 /// on 27-Oct-22
 
-class HomePageAppBar extends StatefulWidget {
-  const HomePageAppBar({Key? key}) : super(key: key);
+class AppBarWidget extends StatefulWidget {
+  const AppBarWidget({Key? key}) : super(key: key);
 
   @override
-  State<HomePageAppBar> createState() => _HomePageAppBarState();
+  State<AppBarWidget> createState() => _AppBarWidgetState();
 }
 
-class _HomePageAppBarState extends State<HomePageAppBar> {
-  late UserController userController;
+class _AppBarWidgetState extends State<AppBarWidget> {
+  late UserAuthenticationController userAuthenticationController;
 
   @override
   void initState() {
     super.initState();
 
-    userController = Get.find();
+    userAuthenticationController = Get.find();
   }
 
   @override
@@ -52,7 +52,7 @@ class _HomePageAppBarState extends State<HomePageAppBar> {
               top: 0.05.sh,
               child: ElevatedButton(
                 onPressed: () {
-                  userController.userLogOut();
+                  userAuthenticationController.userLogOut();
                   Get.offAndToNamed('/login_page');
                 },
                 style: ElevatedButton.styleFrom(

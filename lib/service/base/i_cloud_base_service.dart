@@ -4,7 +4,9 @@ import 'package:flutter_lovers/model/base/i_base_model.dart';
 /// on 29-Oct-22
 
 abstract class ICloudBaseService<T extends IBaseModel> {
-  Future<T?> addNewUser(T model);
+  Future<void> addNewUser(T model);
+
+  Future<T?> getUserByEmail({required String email});
 
   Future<String?> update(T model);
 }

@@ -13,11 +13,9 @@ class FirebaseCloudService implements ICloudBaseService<UserModel> {
   }
 
   @override
-  Future<UserModel?> addNewUser(UserModel model) async {
+  Future<void> addNewUser(UserModel model) async {
     try {
-      await _fireStore.collection('Users').doc(model.cloudId).set(model.toJson());
-
-      return model;
+      await _fireStore.collection('Users').doc(model.id).set(model.toJson());
     } catch (e) {
       throw Exception(e);
     }
@@ -26,8 +24,38 @@ class FirebaseCloudService implements ICloudBaseService<UserModel> {
   @override
   Future<String?> update(UserModel model) async {
     try {
-      await _fireStore.collection('Users').doc(model.cloudId).update(model.toJson());
-      return model.cloudId;
+      await _fireStore.collection('Users').doc(model.id).update(model.toJson());
+      return model.id;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel?> getUserByEmail({required String email}) async {
+    try {
+      var userRef = _fireStore.collection('Users').limit(1);
+      var result = await userRef.where('email', isEqualTo: email).get();
+
+      if (result.docs.isEmpty) {
+        return null;
+      } else {
+        String id = result.docs.first['id'];
+        String email = result.docs.first['email'];
+        String username = result.docs.first['username'];
+        DateTime? createdDate = DateTime.tryParse(result.docs.first['createdDate']);
+        DateTime? lastLogInTime = DateTime.tryParse(result.docs.first['lastLogInTime']);
+        String profilePictureUrl = result.docs.first['profilePictureUrl'];
+
+        return UserModel(
+          id: id,
+          email: email,
+          username: username,
+          createdDate: createdDate,
+          lastLogInTime: lastLogInTime,
+          profilePictureUrl: profilePictureUrl,
+        );
+      }
     } catch (e) {
       rethrow;
     }

@@ -19,7 +19,7 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
     try {
       User? user = _firebaseAuth.currentUser;
       if (user != null) {
-        UserModel userModel = UserModel(cloudId: user.uid, email: user.email!);
+        UserModel userModel = UserModel(id: user.uid, email: user.email!);
         return userModel;
       } else {
         return null;
@@ -40,24 +40,21 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
   }
 
   @override
-  Future<String?> userRegisterWithEmailAndPassword(UserModel model) async {
+  Future<UserModel?> userRegisterWithEmailAndPassword({required String email, required String password}) async {
     try {
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: model.email, password: model.password!);
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
-      return userCredential.user?.uid;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  @override
-  Future<bool> userSignInWithEmailAndPassword(UserModel model) async {
-    try {
-      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: model.email, password: model.password!);
       if (userCredential.user != null) {
-        return true;
+        return UserModel(
+          email: userCredential.user!.email!,
+          id: userCredential.user!.uid,
+          profilePictureUrl: userCredential.user!.photoURL,
+          username: userCredential.user!.displayName,
+          createdDate: userCredential.user!.metadata.creationTime,
+          lastLogInTime: userCredential.user!.metadata.lastSignInTime,
+        );
       } else {
-        return false;
+        return null;
       }
     } catch (e) {
       throw Exception(e);
@@ -65,7 +62,31 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
   }
 
   @override
-  Future<Map<String, dynamic>> userSignInWithFacebook() async {
+  Future<UserModel?> userSignInWithEmailAndPassword({required String email, required String password}) async {
+    try {
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+      if (userCredential.user != null) {
+        UserModel userModel = UserModel(
+          id: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          username: userCredential.user!.displayName,
+          profilePictureUrl: userCredential.user!.photoURL,
+          createdDate: userCredential.user!.metadata.creationTime,
+          lastLogInTime: userCredential.user!.metadata.lastSignInTime,
+        );
+
+        return userModel;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<UserModel?> userSignInWithFacebook() async {
     try {
       // Trigger the sign-in flow
       final LoginResult loginResult = await FacebookAuth.instance.login();
@@ -75,17 +96,26 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
 
       // Once signed in, return the UserCredential
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-      return {
-        'email': userCredential.user?.email,
-        'cloudId': userCredential.user?.uid,
-      };
+
+      if (userCredential.user != null) {
+        return UserModel(
+          email: userCredential.user!.email!,
+          username: userCredential.user!.displayName,
+          profilePictureUrl: userCredential.user!.photoURL,
+          id: userCredential.user!.uid,
+          createdDate: userCredential.user!.metadata.creationTime,
+          lastLogInTime: userCredential.user!.metadata.lastSignInTime,
+        );
+      } else {
+        return null;
+      }
     } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
-  Future<Map<String, dynamic>> userSignInWithGoogle() async {
+  Future<UserModel?> userSignInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -102,10 +132,19 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
       // Once signed in, return the UserCredential
       UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
 
-      return {
-        'email': userCredential.user?.email,
-        'cloudId': userCredential.user?.uid,
-      };
+      if (userCredential.user != null) {
+        UserModel model = UserModel(
+          email: userCredential.user!.email!,
+          username: userCredential.user!.displayName,
+          profilePictureUrl: userCredential.user!.photoURL,
+          id: userCredential.user!.uid,
+          createdDate: userCredential.user!.metadata.creationTime,
+          lastLogInTime: userCredential.user!.metadata.lastSignInTime,
+        );
+        return model;
+      } else {
+        return null;
+      }
     } catch (e) {
       throw Exception(e);
     }

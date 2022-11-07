@@ -4,13 +4,13 @@ import 'package:flutter_lovers/model/base/i_base_model.dart';
 /// on 26-Oct-22
 
 abstract class IAuthBaseService<T extends IBaseModel> {
-  Future<String?> userRegisterWithEmailAndPassword(T model);
+  Future<T?> userRegisterWithEmailAndPassword({required String email, required String password});
 
-  Future<bool> userSignInWithEmailAndPassword(T model);
+  Future<T?> userSignInWithEmailAndPassword({required String email, required String password});
 
-  Future<Map<String, dynamic>> userSignInWithGoogle();
+  Future<T?> userSignInWithGoogle();
 
-  Future<Map<String, dynamic>> userSignInWithFacebook();
+  Future<T?> userSignInWithFacebook();
 
   Future<void> userSignOut();
 

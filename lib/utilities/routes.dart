@@ -1,5 +1,4 @@
 import 'package:flutter_lovers/controller/bindings/home_binding.dart';
-import 'package:flutter_lovers/controller/bindings/user_binding.dart';
 import 'package:flutter_lovers/ui/pages/home_page.dart';
 import 'package:flutter_lovers/ui/pages/login_page.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,6 @@ class Routes {
         page: () => const LoginPage(),
         transitionDuration: _transitionDuration,
         transition: Transition.leftToRightWithFade,
-        binding: UserBinding(),
       ),
     ];
   }

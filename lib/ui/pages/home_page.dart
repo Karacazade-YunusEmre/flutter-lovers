@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lovers/controller/user_controller.dart';
+import 'package:flutter_lovers/controller/user_authentication_controller.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
-import 'package:flutter_lovers/ui/widget/home_page_app_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_lovers/ui/widget/app_bar_widget.dart';
+import 'package:flutter_lovers/ui/widget/bottom_navigation_bar_widget.dart';
 import 'package:get/get.dart';
 
 /// created by YunusEmre
@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late UserController userController;
+  late UserAuthenticationController userController;
   late UserModel? currentUser;
 
   @override
@@ -33,17 +33,18 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          const HomePageAppBar(),
-          Container(
-            width: 1.sw,
-            height: 0.85.sh,
-            color: Colors.green,
-            child: Center(
-              child: Text('Giriş yapan kullanıcı: ${currentUser?.email}'),
+          const AppBarWidget(),
+          Expanded(
+            child: Container(
+              color: Colors.green,
+              child: Center(
+                child: Text('Giriş yapan kullanıcı: ${currentUser?.email}'),
+              ),
             ),
           ),
         ],
       ),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

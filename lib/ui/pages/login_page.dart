@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:flutter_lovers/controller/user_controller.dart';
+import 'package:flutter_lovers/controller/user_authentication_controller.dart';
 import 'package:flutter_lovers/utilities/login_page_messages.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -16,8 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late UserController userController;
 
+  late UserAuthenticationController userController;
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   @override
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
           icon: FontAwesomeIcons.google,
           label: 'Google',
           callback: () async {
-            bool result = await Future.delayed(loginTime).then((_) => userController.userLogInWithGoogle());
+            bool result = await Future.delayed(loginTime).then((_) => userController.userSignInWithGoogle());
             if (result) {
               return null;
             } else {
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String?>? _onLogin(LoginData loginData) async {
     return Future.delayed(loginTime).then((_) async {
-      bool result = await userController.userLogInWithEmailAndPassword(email: loginData.name, password: loginData.password);
+      bool result = await userController.userSignInWithEmailAndPassword(email: loginData.name, password: loginData.password);
       if (result) {
         return null;
       } else {
