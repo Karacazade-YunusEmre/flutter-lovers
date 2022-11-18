@@ -29,6 +29,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).primaryColor,
       title: const Text('Flutter Lovers'),
       centerTitle: false,

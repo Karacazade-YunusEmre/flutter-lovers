@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 /// on 30-Oct-22
 
 mixin DateOperationsMixin {
-  final Dio dio = Dio();
+  static final Dio dio = Dio();
   final dateApiUrl = 'http://api.timezonedb.com/v2.1/get-time-zone';
   final dateApiUrlParameters = <String, dynamic>{
     'key': '1TNDEPNYWZX3',

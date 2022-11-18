@@ -10,7 +10,8 @@ import 'package:get/get.dart';
 /// on 26-Oct-22
 
 class MainController extends GetxController with DateOperationsMixin {
-  final _initialRoute = '/'.obs;
+  final _initialRoute = '/home_page'.obs;
+  final _selectedBottomNavigationIndex = 0.obs;
 
   @override
   Future<void> onInit() async {
@@ -26,6 +27,12 @@ class MainController extends GetxController with DateOperationsMixin {
 
   /// initialRoute setter
   set initialRoute(String value) => _initialRoute.value = value;
+
+  /// selectedBottomNavigationIndex getter
+  int get selectedBottomNavigationIndex => _selectedBottomNavigationIndex.value;
+
+  /// selectedBottomNavigationIndex setter
+  set selectedBottomNavigationIndex(int value) => _selectedBottomNavigationIndex.value = value;
 
   ///#endregion getter and setter
 
@@ -152,6 +159,22 @@ class MainController extends GetxController with DateOperationsMixin {
     } catch (_) {
       debugPrint('Kullanıcı çıkış işlemi sırasında hata oluştu.');
       return false;
+    }
+  }
+
+  void changeSelectedBottomNavigationIndex(int value) {
+    selectedBottomNavigationIndex = value;
+    _changePage(selectedBottomNavigationIndex);
+  }
+
+  void _changePage(int index) {
+    switch (index) {
+      case 0:
+        Get.offAndToNamed('/home_page');
+        break;
+      case 1:
+        Get.offAndToNamed('/personal_page');
+        break;
     }
   }
 
