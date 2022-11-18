@@ -42,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       passwordValidator: userController.passwordValidator,
       messages: LoginPageMessages.getLoginMessages,
       loginProviders: <LoginProvider>[
+        /// login with Google
         LoginProvider(
           icon: FontAwesomeIcons.google,
           label: 'Google',
@@ -54,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
         ),
+
+        /// login with Facebook
         LoginProvider(
           icon: FontAwesomeIcons.facebookF,
           label: 'Facebook',

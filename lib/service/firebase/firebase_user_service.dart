@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
-import 'package:flutter_lovers/service/base/i_auth_base_service.dart';
+import 'package:flutter_lovers/service/base/i_user_base_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// created by YunusEmre
 /// on 26-Oct-22
 
-class FirebaseAuthService implements IAuthBaseService<UserModel> {
+class FirebaseUserService implements IUserBaseService<UserModel> {
   late FirebaseAuth _firebaseAuth;
 
-  FirebaseAuthService() {
+  FirebaseUserService() {
     _firebaseAuth = FirebaseAuth.instance;
   }
 
@@ -134,12 +134,12 @@ class FirebaseAuthService implements IAuthBaseService<UserModel> {
 
       if (userCredential.user != null) {
         UserModel model = UserModel(
+          id: userCredential.user!.uid,
           email: userCredential.user!.email!,
           username: userCredential.user!.displayName,
           profilePictureUrl: userCredential.user!.photoURL,
-          id: userCredential.user!.uid,
-          createdDate: userCredential.user!.metadata.creationTime,
-          lastLogInTime: userCredential.user!.metadata.lastSignInTime,
+          // createdDate: userCredential.user!.metadata.creationTime,
+          // lastLogInTime: userCredential.user!.metadata.lastSignInTime,
         );
         return model;
       } else {

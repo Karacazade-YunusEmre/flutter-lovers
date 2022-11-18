@@ -13,7 +13,7 @@ class AppBarWidget extends StatefulWidget with PreferredSizeWidget {
   State<AppBarWidget> createState() => _AppBarWidgetState();
 
   @override
-  Size get preferredSize => Size(double.infinity, 0.1.sh);
+  Size get preferredSize => Size(double.infinity, 0.07.sh);
 }
 
 class _AppBarWidgetState extends State<AppBarWidget> {
@@ -31,6 +31,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: const Text('Flutter Lovers'),
+      centerTitle: false,
       actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),

@@ -40,12 +40,14 @@ class FirebaseCloudService implements ICloudBaseService<UserModel> {
       if (result.docs.isEmpty) {
         return null;
       } else {
-        String id = result.docs.first['id'];
-        String email = result.docs.first['email'];
-        String username = result.docs.first['username'];
-        DateTime? createdDate = DateTime.tryParse(result.docs.first['createdDate']);
-        DateTime? lastLogInTime = DateTime.tryParse(result.docs.first['lastLogInTime']);
-        String profilePictureUrl = result.docs.first['profilePictureUrl'];
+        final userObject = result.docs.first;
+
+        String? id = userObject['id'];
+        String email = userObject['email'];
+        String? username = userObject['username'];
+        DateTime? createdDate = DateTime.parse(userObject['createdDate']);
+        DateTime? lastLogInTime = DateTime.parse(userObject['lastLogInTime']);
+        String? profilePictureUrl = userObject['profilePictureUrl'];
 
         return UserModel(
           id: id,

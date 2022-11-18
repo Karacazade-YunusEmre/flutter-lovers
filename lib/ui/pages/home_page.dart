@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: true,
       resizeToAvoidBottomInset: false,
       appBar: const AppBarWidget(),
       body: Column(

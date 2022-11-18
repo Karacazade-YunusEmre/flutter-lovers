@@ -45,6 +45,9 @@ class MainController extends GetxController with DateOperationsMixin {
       IBaseModel? model = await userService.userRegisterWithEmailAndPassword(email: email, password: password);
 
       if (model != null) {
+        DateTime? presentDate = await getPresentDate();
+        (model as UserModel).createdDate = presentDate;
+        model.lastLogInTime = presentDate;
         cloudService.addNewUser(model);
 
         return true;
@@ -62,7 +65,11 @@ class MainController extends GetxController with DateOperationsMixin {
       IBaseModel? model = await userService.userSignInWithEmailAndPassword(email: email, password: password);
 
       if (model != null) {
-        cloudService.update(model);
+        IBaseModel? savedModel = await cloudService.getUserByEmail(email: (model as UserModel).email);
+
+        DateTime? presentDate = await getPresentDate();
+        (savedModel as UserModel).lastLogInTime = presentDate;
+        cloudService.update(savedModel);
 
         return true;
       } else {
@@ -80,10 +87,14 @@ class MainController extends GetxController with DateOperationsMixin {
       IBaseModel? model = await userService.userSignInWithGoogle();
 
       if (model != null) {
+        DateTime? presentDate = await getPresentDate();
         IBaseModel? savedModel = await cloudService.getUserByEmail(email: (model as UserModel).email);
         if (savedModel == null) {
+          model.createdDate = presentDate;
+          model.lastLogInTime = presentDate;
           cloudService.addNewUser(model);
         } else {
+          (savedModel as UserModel).lastLogInTime = presentDate;
           cloudService.update(savedModel);
         }
 
