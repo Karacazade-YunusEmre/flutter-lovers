@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lovers/controller/user_authentication_controller.dart';
+import 'package:flutter_lovers/controller/main_controller.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
 import 'package:flutter_lovers/ui/widget/app_bar_widget.dart';
 import 'package:flutter_lovers/ui/widget/bottom_navigation_bar_widget.dart';
@@ -16,24 +16,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late UserAuthenticationController userController;
+  late MainController mainController;
   late UserModel? currentUser;
 
   @override
   void initState() {
     super.initState();
 
-    userController = Get.find();
-    currentUser = userController.getCurrentUser();
+    mainController = Get.find();
+    currentUser = mainController.getCurrentUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      primary: true,
       resizeToAvoidBottomInset: false,
+      appBar: const AppBarWidget(),
       body: Column(
         children: [
-          const AppBarWidget(),
           Expanded(
             child: Container(
               color: Colors.green,

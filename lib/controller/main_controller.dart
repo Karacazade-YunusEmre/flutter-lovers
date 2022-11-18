@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 /// created by YunusEmre
 /// on 26-Oct-22
 
-class UserAuthenticationController extends GetxController with DateOperationsMixin {
+class MainController extends GetxController with DateOperationsMixin {
   final _initialRoute = '/'.obs;
 
   @override
@@ -37,7 +37,6 @@ class UserAuthenticationController extends GetxController with DateOperationsMix
       debugPrint('User signed in already');
     } else {
       initialRoute = '/login_page';
-      // Get.offAndToNamed(initialRoute);
     }
   }
 

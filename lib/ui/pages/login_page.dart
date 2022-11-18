@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:flutter_lovers/controller/user_authentication_controller.dart';
+import 'package:flutter_lovers/controller/main_controller.dart';
 import 'package:flutter_lovers/utilities/login_page_messages.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  late UserAuthenticationController userController;
+  late MainController userController;
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   @override

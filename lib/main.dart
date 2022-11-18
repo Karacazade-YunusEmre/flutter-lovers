@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lovers/controller/user_authentication_controller.dart';
+import 'package:flutter_lovers/controller/main_controller.dart';
 import 'package:flutter_lovers/firebase_options.dart';
 import 'package:flutter_lovers/service/base/i_auth_base_service.dart';
 import 'package:flutter_lovers/service/base/i_cloud_base_service.dart';
@@ -15,7 +15,7 @@ import 'package:get_it/get_it.dart';
 
 late IAuthBaseService userService;
 late ICloudBaseService cloudService;
-late UserAuthenticationController _userController;
+late MainController _mainController;
 
 Future<void> main() async {
   await initApp();
@@ -28,9 +28,9 @@ Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.black,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.light,
+      statusBarColor: Colors.white,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
     ),
   );
   await Firebase.initializeApp(
@@ -49,7 +49,7 @@ void setupLocator() {
 }
 
 void setupController() {
-  _userController = Get.put(UserAuthenticationController());
+  _mainController = Get.put<MainController>(MainController());
 }
 
 class MainApp extends StatelessWidget {
@@ -66,7 +66,7 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Conversation App',
           theme: AppThemeData.getMainLightThemeData,
-          initialRoute: _userController.initialRoute,
+          initialRoute: _mainController.initialRoute,
           getPages: Routes.getRoutes,
         );
       },
