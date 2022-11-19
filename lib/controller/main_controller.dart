@@ -4,12 +4,13 @@ import 'package:flutter_lovers/main.dart';
 import 'package:flutter_lovers/model/base/i_base_model.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
 import 'package:flutter_lovers/utilities/date_operations_mixin.dart';
+import 'package:flutter_lovers/utilities/user_aliases_mixin.dart';
 import 'package:get/get.dart';
 
 /// created by YunusEmre
 /// on 26-Oct-22
 
-class MainController extends GetxController with DateOperationsMixin {
+class MainController extends GetxController with DateOperationsMixin, UserAliasesMixin {
   final _initialRoute = '/home_page'.obs;
   final _selectedBottomNavigationIndex = 0.obs;
 
@@ -53,8 +54,12 @@ class MainController extends GetxController with DateOperationsMixin {
 
       if (model != null) {
         DateTime? presentDate = await getPresentDate();
-        (model as UserModel).createdDate = presentDate;
+        String userAliases = getUserAliases((model as UserModel).email);
+
+        model.createdDate = presentDate;
         model.lastLogInTime = presentDate;
+        model.username = model.username ?? userAliases;
+
         cloudService.addNewUser(model);
 
         return true;

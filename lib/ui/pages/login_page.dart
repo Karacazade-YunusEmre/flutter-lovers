@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       onSignup: _onSignup,
       onRecoverPassword: _onRecoverPassword,
       hideForgotPasswordButton: true,
-      onSubmitAnimationCompleted: () => Get.offAndToNamed('/'),
+      onSubmitAnimationCompleted: () => Get.offAndToNamed('/home_page'),
       loginAfterSignUp: true,
       userValidator: userController.emailValidator,
       passwordValidator: userController.passwordValidator,
