@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
 import 'package:flutter_lovers/service/base/i_user_base_service.dart';
+import 'package:flutter_lovers/utilities/mixins/exception_mixin.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// created by YunusEmre
 /// on 26-Oct-22
 
-class FirebaseUserService implements IUserBaseService<UserModel> {
+class FirebaseUserService with ExceptionMixin implements IUserBaseService<UserModel> {
   late FirebaseAuth _firebaseAuth;
 
   FirebaseUserService() {
@@ -55,6 +56,12 @@ class FirebaseUserService implements IUserBaseService<UserModel> {
         );
       } else {
         return null;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        throw Exception('Kullanıcı Tanımlı!');
+      } else {
+        throw Exception(e);
       }
     } catch (e) {
       throw Exception(e);

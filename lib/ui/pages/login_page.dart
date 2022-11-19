@@ -95,11 +95,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String?>? _onSignup(SignupData signupData) async {
     return Future.delayed(loginTime).then((_) async {
-      final result = await userController.userRegisterWithEmailAndPassword(email: signupData.name!, password: signupData.password!);
-      if (result) {
+      String? result = await userController.userRegisterWithEmailAndPassword(email: signupData.name!, password: signupData.password!);
+      if (result == null) {
         return null;
       } else {
-        return 'Kullanıcı ekleme işlemi sırasında hata oluştu!';
+        return result;
       }
     });
   }

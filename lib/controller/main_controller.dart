@@ -1,10 +1,11 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lovers/main.dart';
 import 'package:flutter_lovers/model/base/i_base_model.dart';
 import 'package:flutter_lovers/model/concrete/user_model.dart';
-import 'package:flutter_lovers/utilities/date_operations_mixin.dart';
-import 'package:flutter_lovers/utilities/user_aliases_mixin.dart';
+import 'package:flutter_lovers/utilities/mixins/date_operations_mixin.dart';
+import 'package:flutter_lovers/utilities/mixins/user_aliases_mixin.dart';
 import 'package:get/get.dart';
 
 /// created by YunusEmre
@@ -48,7 +49,7 @@ class MainController extends GetxController with DateOperationsMixin, UserAliase
     }
   }
 
-  Future<bool> userRegisterWithEmailAndPassword({required String email, required String password}) async {
+  Future<String?> userRegisterWithEmailAndPassword({required String email, required String password}) async {
     try {
       IBaseModel? model = await userService.userRegisterWithEmailAndPassword(email: email, password: password);
 
@@ -62,13 +63,12 @@ class MainController extends GetxController with DateOperationsMixin, UserAliase
 
         cloudService.addNewUser(model);
 
-        return true;
+        return null;
       } else {
-        return false;
+        return 'Hata Oluştu!';
       }
-    } catch (_) {
-      debugPrint('Kullanıcı ekleme işlemi sırasında hata oluştu.');
-      return false;
+    } catch (e) {
+      return e.toString();
     }
   }
 

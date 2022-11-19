@@ -4,11 +4,12 @@ import 'package:flutter_lovers/ui/pages/home_page.dart';
 import 'package:flutter_lovers/ui/pages/login_page.dart';
 import 'package:flutter_lovers/ui/pages/personal_page.dart';
 import 'package:get/get.dart';
+import 'dart:io' show Platform;
 
 /// created by YunusEmre
 /// on 26-Oct-22
 
-Duration _transitionDuration = const Duration(milliseconds: 375);
+Duration _transitionDuration = const Duration(milliseconds: 200);
 
 class Routes {
   static List<GetPage> get getRoutes {
@@ -17,21 +18,21 @@ class Routes {
         name: '/home_page',
         page: () => const HomePage(),
         transitionDuration: _transitionDuration,
-        transition: Transition.leftToRightWithFade,
+        transition: Platform.isIOS ? Transition.leftToRightWithFade : Transition.downToUp,
         binding: HomeBinding(),
       ),
       GetPage(
         name: '/personal_page',
         page: () => const PersonalPage(),
         transitionDuration: _transitionDuration,
-        transition: Transition.leftToRightWithFade,
+        transition: Platform.isIOS ? Transition.leftToRightWithFade : Transition.downToUp,
         binding: PersonalBinding(),
       ),
       GetPage(
         name: '/login_page',
         page: () => const LoginPage(),
         transitionDuration: _transitionDuration,
-        transition: Transition.leftToRightWithFade,
+        transition: Platform.isIOS ? Transition.leftToRightWithFade : Transition.downToUp,
       ),
     ];
   }
