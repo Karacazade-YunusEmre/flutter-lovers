@@ -57,7 +57,7 @@ class MainApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Conversation App',
-          theme: AppThemeData.getMainLightThemeData,
+          theme: AppThemeData.getMaterialLightThemeData,
           initialRoute: _mainController.initialRoute,
           getPages: Routes.getRoutes,
         );

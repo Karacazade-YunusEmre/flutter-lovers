@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,7 +6,7 @@ import 'package:flutter/services.dart';
 /// on 26-Oct-22
 
 class AppThemeData {
-  static ThemeData get getMainLightThemeData {
+  static ThemeData get getMaterialLightThemeData {
     return ThemeData(
       useMaterial3: true,
       primaryColor: const Color(0xFFFFB74D),
@@ -22,6 +23,12 @@ class AppThemeData {
         unselectedItemColor: Colors.black,
       ),
       appBarTheme: getAppBarThemeData,
+    );
+  }
+
+  static CupertinoThemeData get getCupertinoThemeData {
+    return const CupertinoThemeData(
+      primaryColor: Color(0xFFFFB74D),
     );
   }
 
